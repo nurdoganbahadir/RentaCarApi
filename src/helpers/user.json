@@ -1,0 +1,32 @@
+[
+  {
+    "username": "adminUser",
+    "password": "admin1234",
+    "email": "admin@site.com",
+    "firstName": "Admin",
+    "lastName": "User",
+    "isActive": true,
+    "isStaff": true,
+    "isAdmin": true
+  },
+  {
+    "username": "staffUser",
+    "password": "staff1234",
+    "email": "staff@site.com",
+    "firstName": "Staff",
+    "lastName": "User",
+    "isActive": true,
+    "isStaff": true,
+    "isAdmin": false
+  },
+  {
+    "username": "normalUser",
+    "password": "user1234",
+    "email": "user@site.com",
+    "firstName": "Normal",
+    "lastName": "User",
+    "isActive": true,
+    "isStaff": false,
+    "isAdmin": false
+  }
+]

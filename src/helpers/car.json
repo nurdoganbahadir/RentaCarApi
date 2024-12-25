@@ -1,0 +1,48 @@
+[
+  {
+    "plateNumber": "34XYZ678",
+    "brand": "Toyota",
+    "model": "Corolla",
+    "year": 2023,
+    "isAutomatic": true,
+    "pricePerDay": 279.99,
+    "images": ["https://example.com/car1.jpg", "https://example.com/car2.jpg"],
+    "isAvailable": true
+  },
+  {
+    "plateNumber": "35ZXC789",
+    "brand": "Volkswagen",
+    "model": "Passat",
+    "year": 2022,
+    "isAutomatic": true,
+    "pricePerDay": 299.99,
+    "images": [
+      "https://example.com/passat1.jpg",
+      "https://example.com/passat2.jpg"
+    ],
+    "isAvailable": true
+  },
+  {
+    "plateNumber": "06ABC567",
+    "brand": "BMW",
+    "model": "320i",
+    "year": 2021,
+    "isAutomatic": false,
+    "pricePerDay": 399.99,
+    "images": ["https://example.com/bmw1.jpg", "https://example.com/bmw2.jpg"],
+    "isAvailable": false
+  },
+  {
+    "plateNumber": "16DEF456",
+    "brand": "Mercedes",
+    "model": "C200",
+    "year": 2020,
+    "isAutomatic": true,
+    "pricePerDay": 499.99,
+    "images": [
+      "https://example.com/mercedes1.jpg",
+      "https://example.com/mercedes2.jpg"
+    ],
+    "isAvailable": true
+  }
+]
