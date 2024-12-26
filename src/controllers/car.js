@@ -4,7 +4,7 @@
 ------------------------------------------------------- */
 // Car Controller:
 const Car = require("../models/car");
-
+const Reservation = require("../models/reservation");
 module.exports = {
   list: async (req, res) => {
     /*
@@ -21,19 +21,39 @@ module.exports = {
             `
         */
     let customFilter = { isAvailable: true };
+    const { startDate: getStartDate, endDate: getEndDate } = req.query;
+    if (getStartDate && getEndDate) {
+      //Belirtilen tarihlerde rezerve edilmiş araçları bulmak için rezervasyon modelini sorguluycaz
+
+      const rezervedCars = await Reservation.find(
+        {
+          $nor: [
+            { startDate: { $gt: getEndDate } },
+            { endDate: { $lt: getStartDate } },
+          ],
+        },
+        { _id: 0, carId: 1 }
+      ).distinct("carId");
+      if (rezervedCars.length) {
+        customFilter._id = { $nin: rezervedCars };
+      }
+    } else {
+      req.errorStatusCode = 401;
+      throw new Error("startDate and endDate queries are required");
+    }
     const data = await res.getModelList(Car, customFilter, [
-      {path: "createdId",select: "username",},
-      {path: "updatedId", select: "username" },
-    ])
+      { path: "createdId", select: "username" },
+      { path: "updatedId", select: "username" },
+    ]);
     res.status(200).send({
-        error:false,
-        details: await res.getModelListDetails(Car,customFilter),
-        data
-    })
+      error: false,
+      details: await res.getModelListDetails(Car, customFilter),
+      data,
+    });
   },
 
   create: async (req, res) => {
-     /*
+    /*
             #swagger.tags = ["Cars"]
             #swagger.summary = "Create Car"
             #swagger.parameters['body'] = {
@@ -44,31 +64,31 @@ module.exports = {
                 }
             }
         */
-       req.body.createdId = req.user._id
-       req.body.updatedId = req.user._id
+    req.body.createdId = req.user._id;
+    req.body.updatedId = req.user._id;
 
-       const data = await Car.create(req.body)
-       res.status(201).send({
-        error:false,
-        data
-       })
+    const data = await Car.create(req.body);
+    res.status(201).send({
+      error: false,
+      data,
+    });
   },
   read: async (req, res) => {
-  /*
+    /*
             #swagger.tags = ["Cars"]
             #swagger.summary = "Get Single Car"
         */
-       const data= await Car.findOne({_id:req.params.id}).populate([
-        {path: 'createdId', select:'username'},
-        {path: 'updatedId', select:'username'}
-       ])
+    const data = await Car.findOne({ _id: req.params.id }).populate([
+      { path: "createdId", select: "username" },
+      { path: "updatedId", select: "username" },
+    ]);
     res.status(200).send({
-        error:false,
-        data
-    })
+      error: false,
+      data,
+    });
   },
   update: async (req, res) => {
-      /*
+    /*
             #swagger.tags = ["Cars"]
             #swagger.summary = "Update Car"
             #swagger.parameters['body'] = {
@@ -79,28 +99,28 @@ module.exports = {
                 }
             }
         */
-     req.body.updatedId=req.user._id //updatedId verisini req.user'dan aldık
-     let customFilter = {_id: req.params.id}
-     const data= await Car.updateOne(customFilter, req.body, {runValidators:true})
-     res.status(202).send({
-        error:false,
-        data,
-        new : await Car.findOne({_id:req.params.id})
-     })
+    req.body.updatedId = req.user._id; //updatedId verisini req.user'dan aldık
+    let customFilter = { _id: req.params.id };
+    const data = await Car.updateOne(customFilter, req.body, {
+      runValidators: true,
+    });
+    res.status(202).send({
+      error: false,
+      data,
+      new: await Car.findOne({ _id: req.params.id }),
+    });
   },
   deleteCar: async (req, res) => {
-         /*
+    /*
             #swagger.tags = ["Cars"]
             #swagger.summary = "Delete Car"
         */
 
-            const data = await Car.deleteOne({ _id: req.params.id })
+    const data = await Car.deleteOne({ _id: req.params.id });
 
-            res.status(data.deletedCount ? 204 : 404).send({
-                error: !data.deletedCount,
-                data
-            })
-    
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      data,
+    });
   },
-  }
-
+};
