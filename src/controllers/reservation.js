@@ -8,10 +8,24 @@ const Car = require("../models/car");
 
 module.exports = {
   list: async (req, res) => {
-    const data = await res.getModelList(Reservation);
+    let customFilter = {};
+
+    if (!req.user.isAdmin && !req.user.isStaff) {
+      customFilter = { userId: req.user._id };
+    }
+
+    const data = await res.getModelList(Reservation, customFilter, [
+      { path: "userId", select: "username firstName lastName" },
+      { path: "carId" },
+      { path: "createdId", select: "username" },
+      { path: "updatedId", select: "username" },
+    ]);
+
+    const details = await res.getModelListDetails(Reservation, customFilter);
 
     res.status(200).send({
       error: false,
+      details,
       data,
     });
   },
@@ -24,7 +38,20 @@ module.exports = {
     // 1. öncelikle çakışan rezervasyonları yakala
     // 2. müsait araçları listele
     // 3. ilgili araca göre tarih sorgusu yapılmalı (carId gönderilecek)
+    const { carId } = await Reservation.findOne({ carId: req.body.carId });
 
+    const resDate = await Reservation.findOne({
+      carId: req.body.carId,
+    });
+
+    if (req.body.carId === carId.toString()) {
+      if (
+        new Date(req.body.startDate) < resDate.endDate &&
+        new Date(req.body.startDate) < resDate.endDate
+      ) {
+        throw new Error("Araç bu tarihler arasında müsait değildir.");
+      }
+    }
 
     //TİME
     const oneDay = 24 * 60 * 60 * 1000;
@@ -46,13 +73,11 @@ module.exports = {
 
     req.body.amount = pricePerDay * totalDay;
 
-    console.log(req.body);
-
-    const data = await Reservation.create(req.body);
+    // const data = await Reservation.create(req.body);
 
     res.status(201).send({
       error: false,
-      data,
+      // data,
     });
   },
 };
