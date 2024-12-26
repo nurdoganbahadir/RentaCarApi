@@ -31,53 +31,34 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    const startDate = new Date(req.body.startDate);
-    const endDate = new Date(req.body.endDate);
-
-    //istenilen aracın müsaitlik tarihlerini kontrol ediyoruz. müsait değilse hata
-    // 1. öncelikle çakışan rezervasyonları yakala
-    // 2. müsait araçları listele
-    // 3. ilgili araca göre tarih sorgusu yapılmalı (carId gönderilecek)
-    const { carId } = await Reservation.findOne({ carId: req.body.carId });
-
-    const resDate = await Reservation.findOne({
-      carId: req.body.carId,
-    });
-
-    if (req.body.carId === carId.toString()) {
-      if (
-        new Date(req.body.startDate) < resDate.endDate &&
-        new Date(req.body.startDate) < resDate.endDate
-      ) {
-        throw new Error("Araç bu tarihler arasında müsait değildir.");
-      }
-    }
-
-    //TİME
-    const oneDay = 24 * 60 * 60 * 1000;
-    const totalDay = (endDate - startDate) / oneDay;
-
-    //AMOUNT
-    const { pricePerDay } = await Car.findOne(
-      { _id: req.body.carId },
-      "pricePerDay"
-    );
-
-    if (!(req.user.isAdmin || req.user.isStaff)) {
-      //Rezervasyonu müşteri oluşturuyor.
+    if ((!req.user.isAdmin && !req.user.isStaff) || !req.user?.userId) {
       req.body.userId = req.user._id;
     }
 
     req.body.createdId = req.user._id;
     req.body.updatedId = req.user._id;
 
-    req.body.amount = pricePerDay * totalDay;
-
-    // const data = await Reservation.create(req.body);
-
-    res.status(201).send({
-      error: false,
-      // data,
+    const userReservationDates = await Reservation.findOne({
+      userId: req.body.userId,
+      $nor: [
+        { startDate: { $gt: req.body.endDate } },
+        { endDate: { $lt: req.body.startDate } },
+      ],
     });
+
+    if (userReservationDates) {
+      res.errorStatusCode = 400;
+      throw new Error(
+        "It cannot be added because there is another reservation with the same date",
+        { cause: { userReservationDates: userReservationDates } }
+      );
+    } else {
+      const data = await Reservation.create(req.body);
+
+      res.status(200).send({
+        error: false,
+        data,
+      });
+    }
   },
 };
