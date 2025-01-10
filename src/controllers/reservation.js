@@ -5,6 +5,20 @@ const Reservation = require("../models/reservation");
 const Car = require("../models/car");
 module.exports = {
   list: async (req, res) => {
+    /*
+            #swagger.tags = ["Reservation"]
+            #swagger.summary = "List Reservation"
+            #swagger.description = `
+                You can send query with endpoint for filter[], search[], sort[], page and limit.
+                <ul> Examples:
+                    <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
+                    <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+                    <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
+                    <li>URL/?<b>page=2&limit=1</b></li>
+                </ul>
+            `
+        */
+
     let customFilter = {};
 
     if (!req.user.isAdmin && !req.user.isStaff) {
@@ -28,6 +42,18 @@ module.exports = {
   },
 
   create: async (req, res) => {
+    /*
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Create Reservation"
+            #swagger.parameters['body'] = {
+                in: 'body',
+                required: true,
+                schema: {
+                    $ref: '#/definitions/Reservation'
+                }
+            }
+        */
+
     // AMOUNT
     const oneDay = 24 * 60 * 60 * 1000;
     const totalRentDay =
@@ -67,6 +93,10 @@ module.exports = {
     }
   },
   read: async (req, res) => {
+    /*
+            #swagger.tags = ["Reservation"]
+            #swagger.summary = "Get Single Reservation"
+        */
     let customFilter = {};
 
     if (!req.user.isAdmin && !req.user.isStaff) {
@@ -89,6 +119,18 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+    /*
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Update Reservation"
+            #swagger.parameters['body'] = {
+                in: 'body',
+                required: true,
+                schema: {
+                    $ref: '#/definitions/Reservation'
+                }
+            }
+        */
+
     // AMOUNT
     const oneDay = 24 * 60 * 60 * 1000;
     const totalRentDay =
@@ -113,6 +155,11 @@ module.exports = {
   },
 
   delete: async (req, res) => {
+    /*
+            #swagger.tags = ["Reservations"]
+            #swagger.summary = "Delete Reservation"
+        */
+
     const data = await Reservation.deleteOne({ _id: req.params.id });
 
     res.status(data.deletedCount ? 204 : 404).send({
