@@ -52,8 +52,8 @@ module.exports = function(to, subject, message) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'qadiradamson@gmail.com',
-            pass: 'kjbw usic ovbn lipb'
+            user: 'your mail adress',
+            pass: 'mail password app key'
         }
     })
 
@@ -68,8 +68,8 @@ module.exports = function(to, subject, message) {
 
     transporter.sendMail({
 
-        // from: 'qadiradamson@gmail.com',
-        to: to, // 'qadir@clarusway.com',
+        // from: '...@gmail.com',
+        to: to, // '...@clarusway.com',
         subject: subject, // 'Hello',
         text: message, // 'Hello There. How are you?',
         html: message, // '<b>Hello There.</b> <p>How are you?</p>',
