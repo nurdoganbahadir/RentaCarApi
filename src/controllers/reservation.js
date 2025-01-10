@@ -1,11 +1,8 @@
 "use strict";
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+
 // Reservation Controller:
 const Reservation = require("../models/reservation");
 const Car = require("../models/car");
-
 module.exports = {
   list: async (req, res) => {
     let customFilter = {};
@@ -31,6 +28,14 @@ module.exports = {
   },
 
   create: async (req, res) => {
+    // amount
+    const oneDay = 24 * 60 * 60 * 1000;
+    const totalRentDay =
+      new Date(req.body.endDate) - new Date(req.body.startDate);
+    const dayTotal = totalRentDay / oneDay; // kaç gün olduğunu hesapladık
+    const { pricePerDay } = await Car.findOne({ _id: req.body.carId }); // mevcut istenen aracın günlük fiyat bilgisi alındı
+    req.body.amount = pricePerDay * dayTotal;
+
     if ((!req.user.isAdmin && !req.user.isStaff) || !req.user?.userId) {
       req.body.userId = req.user._id;
     }
@@ -61,11 +66,10 @@ module.exports = {
       });
     }
   },
-
   read: async (req, res) => {
     let customFilter = {};
 
-    if (!req.user.isAdmin && !req.user.isAdmin) {
+    if (!req.user.isAdmin && !req.user.isStaff) {
       customFilter = { userId: req.user._id };
     }
 
@@ -93,7 +97,6 @@ module.exports = {
     const data = await Reservation.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
-
     res.status(202).send({
       error: false,
       data,
@@ -103,7 +106,8 @@ module.exports = {
 
   delete: async (req, res) => {
     const data = await Reservation.deleteOne({ _id: req.params.id });
-    res.status(data.deleteCount ? 204 : 404).send({
+
+    res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
       data,
     });
