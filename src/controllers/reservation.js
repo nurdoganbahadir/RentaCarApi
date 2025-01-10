@@ -28,13 +28,13 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    // amount
+    // AMOUNT
     const oneDay = 24 * 60 * 60 * 1000;
     const totalRentDay =
       new Date(req.body.endDate) - new Date(req.body.startDate);
     const dayTotal = totalRentDay / oneDay; // kaç gün olduğunu hesapladık
     const { pricePerDay } = await Car.findOne({ _id: req.body.carId }); // mevcut istenen aracın günlük fiyat bilgisi alındı
-    req.body.amount = pricePerDay * dayTotal;
+    req.body.amount = pricePerDay * dayTotal; // bodye amount hesap edilerek gönderildi
 
     if ((!req.user.isAdmin && !req.user.isStaff) || !req.user?.userId) {
       req.body.userId = req.user._id;
@@ -89,6 +89,14 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+    // AMOUNT
+    const oneDay = 24 * 60 * 60 * 1000;
+    const totalRentDay =
+      new Date(req.body.endDate) - new Date(req.body.startDate);
+    const dayTotal = totalRentDay / oneDay; // kaç gün olduğunu hesapladık
+    const { pricePerDay } = await Car.findOne({ _id: req.body.carId }); // mevcut istenen aracın günlük fiyat bilgisi alındı
+    req.body.amount = pricePerDay * dayTotal; // bodye amount hesap edilerek gönderildi
+
     if (!req.user.isAdmin) {
       delete req.body.userId;
     }
