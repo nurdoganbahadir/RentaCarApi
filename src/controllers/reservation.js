@@ -6,7 +6,7 @@ const Car = require("../models/car");
 module.exports = {
   list: async (req, res) => {
     /*
-            #swagger.tags = ["Reservation"]
+            #swagger.tags = ["Reservations"]
             #swagger.summary = "List Reservation"
             #swagger.description = `
                 You can send query with endpoint for filter[], search[], sort[], page and limit.
@@ -94,7 +94,7 @@ module.exports = {
   },
   read: async (req, res) => {
     /*
-            #swagger.tags = ["Reservation"]
+            #swagger.tags = ["Reservations"]
             #swagger.summary = "Get Single Reservation"
         */
     let customFilter = {};

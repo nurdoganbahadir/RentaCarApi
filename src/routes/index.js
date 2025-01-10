@@ -11,5 +11,6 @@ router.use("/users", require("./user"));
 router.use("/cars", require("./car"));
 router.use("/tokens", require("./token"));
 router.use("/reservations", require("./reservation"));
+router.use("/documents", require("./document"));
 
 module.exports = router;
