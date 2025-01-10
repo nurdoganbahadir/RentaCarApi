@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Flight Reservation API",
-    "description": "Flight Reservation Management System",
+    "title": "Rent A Car API",
+    "description": "Rent A Car Management System",
     "termsOfService": "http://www.clarusway.com/#",
     "contact": {
       "name": "Clarusway",
@@ -338,13 +338,25 @@
         }
       }
     },
-    "/flights/": {
+    "/cars/": {
       "get": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "List Flights",
-        "description": "  You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "summary": "List Cars",
+        "description": "  You can send query with endpoint for filter[], search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -353,9 +365,9 @@
       },
       "post": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "Create Flight",
+        "summary": "Create Car",
         "description": "",
         "parameters": [
           {
@@ -363,7 +375,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Flight"
+              "$ref": "#/definitions/Car"
             }
           }
         ],
@@ -374,12 +386,12 @@
         }
       }
     },
-    "/flights/{id}": {
+    "/cars/{id}": {
       "get": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "Get Single Flight",
+        "summary": "Get Single Car",
         "description": "",
         "parameters": [
           {
@@ -397,9 +409,9 @@
       },
       "put": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "Update Flight",
+        "summary": "Update Car",
         "description": "",
         "parameters": [
           {
@@ -413,12 +425,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "schema": {
-                  "$ref": "#/definitions/Flight"
-                }
-              }
+              "$ref": "#/definitions/Car"
             }
           }
         ],
@@ -430,9 +437,9 @@
       },
       "delete": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "Delete Flight",
+        "summary": "Delete Car",
         "description": "",
         "parameters": [
           {
@@ -453,9 +460,9 @@
       },
       "patch": {
         "tags": [
-          "Flights"
+          "Cars"
         ],
-        "summary": "Update Flight",
+        "summary": "Update Car",
         "description": "",
         "parameters": [
           {
@@ -469,149 +476,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "schema": {
-                  "$ref": "#/definitions/Flight"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Accepted"
-          }
-        }
-      }
-    },
-    "/passengers/": {
-      "get": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "List Passengers",
-        "description": "  You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "Create Passenger",
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Passenger"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
-        }
-      }
-    },
-    "/passengers/{id}": {
-      "get": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "Get Single Passenger",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "Update Passenger",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Passenger"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Accepted"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "Delete Passenger",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Passengers"
-        ],
-        "summary": "Update Passenger",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Passenger"
+              "$ref": "#/definitions/Car"
             }
           }
         ],
@@ -625,10 +490,10 @@
     "/reservations/": {
       "get": {
         "tags": [
-          "Reservations"
+          "Reservation"
         ],
-        "summary": "List Reservations",
-        "description": "  You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "summary": "List Reservation",
+        "description": "  You can send query with endpoint for filter[], search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -647,39 +512,13 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "reservationname": {
-                  "type": "string",
-                  "example": "test"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "1234"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "test@site.com"
-                },
-                "isActive": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "isStaff": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "isAdmin": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
+              "$ref": "#/definitions/Reservation"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -687,7 +526,7 @@
     "/reservations/{id}": {
       "get": {
         "tags": [
-          "Reservations"
+          "Reservation"
         ],
         "summary": "Get Single Reservation",
         "description": "",
@@ -723,33 +562,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "reservationname": {
-                  "type": "string",
-                  "example": "test"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "1234"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "test@site.com"
-                },
-                "isActive": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "isStaff": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "isAdmin": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
+              "$ref": "#/definitions/Reservation"
             }
           }
         ],
@@ -800,33 +613,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "reservationname": {
-                  "type": "string",
-                  "example": "test"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "1234"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "test@site.com"
-                },
-                "isActive": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "isStaff": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "isAdmin": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
+              "$ref": "#/definitions/Reservation"
             }
           }
         ],
@@ -961,30 +748,30 @@
         }
       }
     },
-    "Flight": {
+    "Car": {
       "type": "object",
       "properties": {
-        "flightNumber": {
+        "plateNumber": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
             "trim": {
-              "type": "boolean",
-              "example": true
-            },
-            "required": {
               "type": "boolean",
               "example": true
             },
             "unique": {
               "type": "boolean",
               "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
             }
           }
         },
-        "airline": {
+        "brand": {
           "type": "object",
           "properties": {
             "type": {
@@ -1000,7 +787,7 @@
             }
           }
         },
-        "departure": {
+        "model": {
           "type": "object",
           "properties": {
             "type": {
@@ -1016,7 +803,39 @@
             }
           }
         },
-        "departureDate": {
+        "year": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "min": {
+              "type": "number",
+              "example": 2000
+            },
+            "max": {
+              "type": "number",
+              "example": 2025
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "isAutomatic": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
+        "pricePerDay": {
           "type": "object",
           "properties": {
             "type": {
@@ -1028,29 +847,26 @@
             }
           }
         },
-        "arrival": {
+        "images": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
-            "trim": {
-              "type": "boolean",
-              "example": true
-            },
-            "required": {
-              "type": "boolean",
-              "example": true
+            "default": {
+              "type": "array",
+              "example": [],
+              "items": {}
             }
           }
         },
-        "arrivalDate": {
+        "isAvailable": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
-            "required": {
+            "default": {
               "type": "boolean",
               "example": true
             }
@@ -1066,11 +882,68 @@
               "type": "string",
               "example": "User"
             },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "updatedId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        }
+      }
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "token": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
             "trim": {
               "type": "boolean",
               "example": true
             },
             "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
               "type": "boolean",
               "example": true
             }
@@ -1081,28 +954,7 @@
     "Reservation": {
       "type": "object",
       "properties": {
-        "flightId": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "function"
-            },
-            "ref": {
-              "type": "string",
-              "example": "Flight"
-            },
-            "required": {
-              "type": "boolean",
-              "example": true
-            }
-          }
-        },
-        "passengers": {
-          "type": "array",
-          "example": [],
-          "items": {}
-        },
-        "createdId": {
+        "userId": {
           "type": "object",
           "properties": {
             "type": {
@@ -1112,30 +964,21 @@
               "type": "string",
               "example": "User"
             },
-            "trim": {
-              "type": "boolean",
-              "example": true
-            },
             "required": {
               "type": "boolean",
               "example": true
             }
           }
-        }
-      }
-    },
-    "Passenger": {
-      "type": "object",
-      "properties": {
-        "firstName": {
+        },
+        "carId": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
-            "trim": {
-              "type": "boolean",
-              "example": true
+            "ref": {
+              "type": "string",
+              "example": "Car"
             },
             "required": {
               "type": "boolean",
@@ -1143,15 +986,11 @@
             }
           }
         },
-        "lastName": {
+        "startDate": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
-            },
-            "trim": {
-              "type": "boolean",
-              "example": true
             },
             "required": {
               "type": "boolean",
@@ -1159,63 +998,27 @@
             }
           }
         },
-        "gender": {
+        "endDate": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
-            },
-            "enum": {
-              "type": "array",
-              "example": [
-                "M",
-                "F",
-                null
-              ],
-              "items": {}
-            },
-            "default": {}
-          }
-        },
-        "email": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "function"
-            },
-            "trim": {
-              "type": "boolean",
-              "example": true
             },
             "required": {
-              "type": "array",
-              "example": [
-                true,
-                "Email field must be required"
-              ],
-              "items": {
-                "type": "string"
-              }
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "amount": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
             },
-            "unique": {
-              "type": "array",
-              "example": [
-                true,
-                "There is this email. Email field must be unique."
-              ],
-              "items": {
-                "type": "string"
-              }
-            },
-            "validate": {
-              "type": "array",
-              "example": [
-                null,
-                "Email type is not correct."
-              ],
-              "items": {
-                "type": "string"
-              }
+            "required": {
+              "type": "boolean",
+              "example": true
             }
           }
         },
@@ -1229,9 +1032,21 @@
               "type": "string",
               "example": "User"
             },
-            "trim": {
+            "required": {
               "type": "boolean",
               "example": true
+            }
+          }
+        },
+        "updatedId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
             },
             "required": {
               "type": "boolean",

@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "debug": "DEBUG=* nodemon"
+    "debug": "DEBUG=* nodemon",
+    "dev": "node swaggerAutogen && nodemon index.js"
   },
   "keywords": [],
   "author": "Clarusway",
